@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import itertools
 from msg import *
 import math

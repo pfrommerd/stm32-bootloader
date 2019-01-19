@@ -1,0 +1,11 @@
+*.class
+*.zip
+__pycache__
+*~
+.nfs*
+
+extern
+
+# cmake files
+**/cmake-build*
+build
