@@ -1,0 +1,19 @@
+diff -ur STM32Cube_FW_F7_V1.14.0/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/system_stm32f7xx.c STM32Cube_FW_F7_V1.14.0_fixed/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/system_stm32f7xx.c
+--- STM32Cube_FW_F7_V1.14.0/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/system_stm32f7xx.c	2018-11-03 12:39:28.000000000 -0400
++++ STM32Cube_FW_F7_V1.14.0_fixed/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/system_stm32f7xx.c	2019-01-19 17:41:38.120590452 -0500
+@@ -173,11 +173,15 @@
+   RCC->CIR = 0x00000000;
+ 
+   /* Configure the Vector Table location add offset address ------------------*/
++#ifdef VECT_TAB_SPEC_OFFSET
++  SCB->VTOR = VECT_TAB_SPEC_OFFSET; /* Vector Table Relocation special offset */
++#else
+ #ifdef VECT_TAB_SRAM
+   SCB->VTOR = RAMDTCM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM */
+ #else
+   SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH */
+ #endif
++#endif
+ }
+ 
+ /**

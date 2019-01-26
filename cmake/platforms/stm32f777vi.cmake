@@ -17,15 +17,16 @@ set(FLOAT_ABI "-mfloat-abi=hard")
 set(MCU "${CPU} -mthumb -mthumb-interwork ${FPU} ${FLOAT_ABI}")
 
 set(COMMON_FLAGS "${MCU} -O0 -Wall -fdata-sections -ffunction-sections")
-set(COMMON_FLAGS "${COMMON_FLAGS}")
+# Disable some warmings
+set(COMMON_FLAGS "${COMMON_FLAGS} -Wno-attributes")
 
 # Export the linking flags
 # to disable the system link flags
 
 if (USE_APP)
-    set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/extern/config/stm32f777vi_app.lds")
+    set(LINKER_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/stm32f777vi_app.lds")
 else (USE_APP)
-    set(LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/extern/config/stm32f777vi.lds")
+    set(LINKER_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/stm32f777vi.lds")
 endif (USE_APP)
 
 set(LINK_LIB_FLAGS "-lc -lm -lnosys")

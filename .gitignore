@@ -4,8 +4,6 @@ __pycache__
 *~
 .nfs*
 
-extern
-
 # cmake files
 **/cmake-build*
 build

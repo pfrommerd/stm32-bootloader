@@ -240,6 +240,7 @@ namespace bootloader {
                 if (!_transmitting) {
                     _transmit(_txBuf.pop());
                 }
+                return pushed;
             }
 
             void clearBuffer() {

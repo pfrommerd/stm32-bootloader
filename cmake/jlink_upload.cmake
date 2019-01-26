@@ -1,8 +1,20 @@
 cmake_minimum_required(VERSION 3.9)
 
+macro(subdirlist result curdir)
+	FILE(GLOB children RELATIVE "${curdir}" "${curdir}/*")
+	SET(dirlist "")
+	foreach(child ${children})
+		if(IS_DIRECTORY "${curdir}/${child}")
+			LIST(APPEND dirlist "${curdir}/${child}")
+		endif()
+	endforeach()
+	SET(${result} ${dirlist})
+endmacro()
+
 if (WIN32)
+	subdirlist(JLINK_DIRS "C:/Program Files (x86)/SEGGER")
     find_program(JLINK_EXE NAMES "JLinkGDBServerCL" "JLinkGDBServerCLExe"
-                           PATHS "C:\\Program Files (x86)\\SEGGER\\JLink_V640")
+                           PATHS ${JLINK_DIRS})
 else()
     find_program(JLINK_EXE NAMES "JLinkGDBServerCL" "JLinkGDBServerCLExe")
 endif()
@@ -12,10 +24,11 @@ if ("${JLINK_EXE}" STREQUAL "JLINK_EXE-NOTFOUND")
     message("To enable, please set the CMAKE_PROGRAM_PATH environment variable")
 endif()
 
+set(TOOLS_DIR "${CMAKE_CURRENT_LIST_DIR}/tools")
 function(add_jlink_upload TARGET_NAME DEVICE)
     add_custom_target(${TARGET_NAME}-server
-	    python3 ${CMAKE_SOURCE_DIR}/tools/gdbserver.py -e ${JLINK_EXE}  -d ${DEVICE}
-        COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/gdbinit.py $<TARGET_FILE:${TARGET_NAME}>
+        python3 ${TOOLS_DIR}/gdbserver.py -e ${JLINK_EXE}  -d ${DEVICE}
+        COMMAND python3 ${TOOLS_DIR}/gdbinit.py $<TARGET_FILE:${TARGET_NAME}>
 	    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
     add_custom_target(${TARGET_NAME}-debug

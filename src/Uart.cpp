@@ -14,8 +14,8 @@ namespace bootloader{
                            _rxPin(),
                            _txPin(),
                            _handle(UART_HandleTypeDef()),
-                           _txBuffer(),
                            _rxBuffer(),
+                           _txBuffer(),
                            _transmitting(false),
                            _error(false) {
                 _handle.Instance = uart;
